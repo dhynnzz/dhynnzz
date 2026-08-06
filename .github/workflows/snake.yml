@@ -1,4 +1,4 @@
-name: Generate Snake Animation
+name: Generate Snake.io Style Animation
 
 on:
   workflow_dispatch:
@@ -23,7 +23,49 @@ jobs:
             dist/github-contribution-grid-snake.svg?color_snake=#00E5FF&color_dots=#161B22,#164E63,#0891B2,#22D3EE,#A855F7
             dist/github-contribution-grid-snake-dark.svg?palette=github-dark&color_snake=#00E5FF&color_dots=#161B22,#164E63,#0891B2,#22D3EE,#A855F7
 
-      - name: Push snake to output branch
+      - name: Add Snake.io neon effect
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          files = [
+              Path("dist/github-contribution-grid-snake.svg"),
+              Path("dist/github-contribution-grid-snake-dark.svg")
+          ]
+
+          for file in files:
+              text = file.read_text()
+
+              # Add neon SVG filter
+              defs = """
+              <defs>
+                <filter id="snakeGlow"
+                        x="-50%" y="-50%"
+                        width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="2.5"
+                                  result="blur"/>
+                  <feMerge>
+                    <feMergeNode in="blur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+              </defs>
+              """
+
+              pos = text.find(">")
+              text = text[:pos+1] + defs + text[pos+1:]
+
+              # Apply glow to cyan snake elements
+              text = text.replace(
+                  'fill="#00E5FF"',
+                  'fill="#00E5FF" filter="url(#snakeGlow)"'
+              )
+
+              file.write_text(text)
+
+          PY
+
+      - name: Deploy animation
         uses: crazy-max/ghaction-github-pages@v4
         with:
           build_dir: dist
