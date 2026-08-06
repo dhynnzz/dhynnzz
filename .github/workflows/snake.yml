@@ -1,74 +1,35 @@
-name: Generate Snake.io Style Animation
+name: Generate Galaga Contribution Graph
 
 on:
-  workflow_dispatch:
   schedule:
-    - cron: "0 */12 * * *"
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
 
 jobs:
   generate:
-    permissions:
-      contents: write
-
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 20
 
     steps:
-      - name: Generate contribution snake
-        uses: Platane/snk/svg-only@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate Galaga Contribution Graph
+        uses: abozanona/pacman-contribution-graph@main
         with:
-          github_user_name: ${{ github.repository_owner }}
+          github_user_name: dhynnzz
+          games: 'galaga'
 
-          outputs: |
-            dist/github-contribution-grid-snake.svg?color_snake=#00E5FF&color_dots=#161B22,#164E63,#0891B2,#22D3EE,#A855F7
-            dist/github-contribution-grid-snake-dark.svg?palette=github-dark&color_snake=#00E5FF&color_dots=#161B22,#164E63,#0891B2,#22D3EE,#A855F7
-
-      - name: Add Snake.io neon effect
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-
-          files = [
-              Path("dist/github-contribution-grid-snake.svg"),
-              Path("dist/github-contribution-grid-snake-dark.svg")
-          ]
-
-          for file in files:
-              text = file.read_text()
-
-              # Add neon SVG filter
-              defs = """
-              <defs>
-                <filter id="snakeGlow"
-                        x="-50%" y="-50%"
-                        width="200%" height="200%">
-                  <feGaussianBlur stdDeviation="2.5"
-                                  result="blur"/>
-                  <feMerge>
-                    <feMergeNode in="blur"/>
-                    <feMergeNode in="SourceGraphic"/>
-                  </feMerge>
-                </filter>
-              </defs>
-              """
-
-              pos = text.find(">")
-              text = text[:pos+1] + defs + text[pos+1:]
-
-              # Apply glow to cyan snake elements
-              text = text.replace(
-                  'fill="#00E5FF"',
-                  'fill="#00E5FF" filter="url(#snakeGlow)"'
-              )
-
-              file.write_text(text)
-
-          PY
-
-      - name: Deploy animation
-        uses: crazy-max/ghaction-github-pages@v4
+      - name: Push SVGs to output branch
+        uses: crazy-max/ghaction-github-pages@v3.1.0
         with:
-          build_dir: dist
           target_branch: output
+          build_dir: dist
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
