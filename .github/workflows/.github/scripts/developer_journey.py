@@ -1,1 +1,0 @@
-print("Developer Journey Generator")
