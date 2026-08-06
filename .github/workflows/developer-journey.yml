@@ -11,7 +11,6 @@ permissions:
 jobs:
   generate:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
 
     steps:
       - name: Checkout repository
@@ -31,9 +30,22 @@ jobs:
         run: python .github/scripts/developer_journey.py
 
       - name: Deploy Developer Journey to output branch
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: output
-          publish_dir: ./dist
-          keep_files: true
+        run: |
+          cp developer-journey.svg /tmp/developer-journey.svg
+
+          git fetch origin output
+          git checkout output
+
+          cp /tmp/developer-journey.svg developer-journey.svg
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add developer-journey.svg
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Update Developer Journey"
+            git push origin output
+          fi
