@@ -150,6 +150,20 @@ Project Machine Learning untuk melakukan klasifikasi data tumor otak menggunakan
 </p>
 
 <br>
+<!-- ===================== FOOTER ===================== -->
+<br>
+
+---
+
+<p align="center">
+  <i>"Jika kau tidak mengambil risiko, kau tidak bisa menciptakan masa depan."</i>
+</p>
+
+<h3 align="center">☠️</h3>
+
+<p align="center">
+  <b>Thanks for visiting my profile!</b>
+</p>
 
 <!-- ===================== PROFILE VIEWS ===================== -->
 
@@ -161,17 +175,3 @@ Project Machine Learning untuk melakukan klasifikasi data tumor otak menggunakan
 </p>
 
 <br>
-
----
-
-<!-- ===================== FOOTER ===================== -->
-
-<p align="center">
-  <i>"Jika kau tidak mengambil risiko, kau tidak bisa menciptakan masa depan."</i>
-</p>
-
-<h3 align="center">☠️</h3>
-
-<p align="center">
-  <b>Thanks for visiting my profile!</b>
-</p>
