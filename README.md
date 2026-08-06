@@ -133,24 +133,20 @@ Project Machine Learning untuk melakukan klasifikasi data tumor otak menggunakan
   />
 </p>
 <!-- ===================== CONTRIBUTION SNAKE ===================== -->
+<br>
 
-<h2 align="center">🐍 My Contribution Journey</h2>
+<h2 align="center">⚡ Contribution Journey</h2>
 
 <p align="center">
-  <picture>
-    <source
-      media="(prefers-color-scheme: dark)"
-      srcset="https://raw.githubusercontent.com/dhynnzz/dhynnzz/gh-pages/github-contribution-grid-snake-dark.svg"
-    />
-    <source
-      media="(prefers-color-scheme: light)"
-      srcset="https://raw.githubusercontent.com/dhynnzz/dhynnzz/gh-pages/github-contribution-grid-snake.svg"
-    />
-    <img
-      alt="GitHub Contribution Snake"
-      src="https://raw.githubusercontent.com/dhynnzz/dhynnzz/gh-pages/github-contribution-grid-snake.svg"
-    />
-  </picture>
+  <img
+    src="https://raw.githubusercontent.com/dhynnzz/dhynnzz/output/github-contribution-grid-snake-dark.svg"
+    alt="GitHub Contribution Animation"
+    width="100%"
+  />
+</p>
+
+<p align="center">
+  <i>Quiet, and let's do this.</i>
 </p>
 
 <br>
@@ -171,7 +167,7 @@ Project Machine Learning untuk melakukan klasifikasi data tumor otak menggunakan
 <!-- ===================== FOOTER ===================== -->
 
 <p align="center">
-  <i>"If you don't take risks, you can't create a future."</i>
+  <i>"Jika kau tidak mengambil risiko, kau tidak bisa menciptakan masa depan."</i>
 </p>
 
 <h3 align="center">☠️</h3>
