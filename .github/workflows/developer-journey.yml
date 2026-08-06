@@ -11,6 +11,7 @@ permissions:
 jobs:
   generate:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - name: Checkout repository
@@ -29,9 +30,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python .github/scripts/developer_journey.py
 
+      - name: Check generated SVG
+        run: |
+          echo "Checking generated files..."
+          ls -la dist
+          test -f dist/developer-journey.svg
+
       - name: Deploy Developer Journey to output branch
         run: |
-          cp developer-journey.svg /tmp/developer-journey.svg
+          cp dist/developer-journey.svg /tmp/developer-journey.svg
 
           git fetch origin output
           git checkout output
