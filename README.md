@@ -126,9 +126,12 @@ Project Machine Learning untuk melakukan klasifikasi data tumor otak menggunakan
 <h2>📊 GitHub Analytics</h2>
 
 <p align="center">
-  🚧 GitHub statistics are currently unavailable.
+  <img 
+    src="https://raw.githubusercontent.com/dhynnzz/dhynnzz/main/github-metrics.svg"
+    alt="Mhmd Aminuddin GitHub Metrics"
+    width="100%"
+  />
 </p>
-
 <!-- ===================== CONTRIBUTION SNAKE ===================== -->
 
 <h2 align="center">🐍 My Contribution Journey</h2>
