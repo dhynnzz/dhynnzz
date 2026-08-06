@@ -2,6 +2,7 @@ import os
 import random
 import requests
 from datetime import datetime
+from html import escape
 
 USERNAME = "dhynnzz"
 
@@ -21,15 +22,18 @@ LEVEL_COLORS = [
 ACCENT = "#00d9ff"
 PURPLE = "#a855f7"
 TEXT = "#c9d1d9"
+MUTED = "#8b949e"
+
+token = os.environ.get("GITHUB_TOKEN", "")
 
 headers = {
-    "Authorization": f"Bearer {os.environ.get('GITHUB_TOKEN', '')}",
+    "Authorization": f"Bearer {token}",
     "Content-Type": "application/json",
 }
 
 query = """
-query($userName:String!) {
-  user(login: $userName){
+query($userName: String!) {
+  user(login: $userName) {
     contributionsCollection {
       contributionCalendar {
         weeks {
@@ -49,18 +53,23 @@ response = requests.post(
     "https://api.github.com/graphql",
     json={
         "query": query,
-        "variables": {"userName": USERNAME}
+        "variables": {"userName": USERNAME},
     },
-    headers=headers
+    headers=headers,
+    timeout=30,
 )
 
 response.raise_for_status()
 
 data = response.json()
 
-weeks = data["data"]["user"]["contributionsCollection"][
-    "contributionCalendar"
-]["weeks"]
+if "errors" in data:
+    raise RuntimeError(data["errors"])
+
+weeks = (
+    data["data"]["user"]["contributionsCollection"]
+    ["contributionCalendar"]["weeks"]
+)
 
 svg = []
 
@@ -70,19 +79,24 @@ svg.append(
     f'viewBox="0 0 {WIDTH} {HEIGHT}">'
 )
 
-svg.append(f'<rect width="100%" height="100%" rx="16" fill="{BG}"/>')
+svg.append(
+    f'<rect width="{WIDTH}" height="{HEIGHT}" '
+    f'rx="16" fill="{BG}"/>'
+)
 
 # Title
 svg.append(
     f'<text x="40" y="42" fill="{TEXT}" '
-    f'font-family="Arial" font-size="20" font-weight="bold">'
-    f'⚡ Developer Journey'
+    f'font-family="Arial, sans-serif" '
+    f'font-size="20" font-weight="bold">'
+    f'Developer Journey'
     f'</text>'
 )
 
 svg.append(
-    f'<text x="40" y="66" fill="#8b949e" '
-    f'font-family="Arial" font-size="12">'
+    f'<text x="40" y="66" fill="{MUTED}" '
+    f'font-family="Arial, sans-serif" '
+    f'font-size="12">'
     f'Building one commit at a time.'
     f'</text>'
 )
@@ -102,8 +116,8 @@ level_map = {
 
 active_cells = []
 
+# Contribution grid
 for x, week in enumerate(weeks):
-
     for y, day in enumerate(week["contributionDays"]):
 
         px = START_X + x * (CELL + GAP)
@@ -121,129 +135,148 @@ for x, week in enumerate(weeks):
             f'rx="3" fill="{color}"/>'
         )
 
-# Developer character
+# Developer character position
 if active_cells:
-
     hero_x, hero_y = active_cells[-1]
-
 else:
-
     hero_x = 500
     hero_y = 150
 
-# Glow
+# Glow animation
 svg.append(
     f'''
-    <circle cx="{hero_x + 6}" cy="{hero_y + 6}" r="18"
-    fill="{ACCENT}" opacity="0.15">
-        <animate
-            attributeName="r"
-            values="15;22;15"
-            dur="2s"
-            repeatCount="indefinite"/>
-    </circle>
-    '''
+<circle cx="{hero_x + 6}" cy="{hero_y + 6}"
+        r="18"
+        fill="{ACCENT}"
+        opacity="0.15">
+    <animate
+        attributeName="r"
+        values="15;22;15"
+        dur="2s"
+        repeatCount="indefinite"/>
+</circle>
+'''
 )
 
-# Character
+# Character body
 svg.append(
-    f'<circle cx="{hero_x + 6}" cy="{hero_y + 6}" '
+    f'<circle cx="{hero_x + 6}" '
+    f'cy="{hero_y + 6}" '
     f'r="7" fill="{ACCENT}"/>'
 )
 
 # Eyes
 svg.append(
-    f'<circle cx="{hero_x + 4}" cy="{hero_y + 4}" '
+    f'<circle cx="{hero_x + 4}" '
+    f'cy="{hero_y + 4}" '
     f'r="1.3" fill="#ffffff"/>'
 )
 
 svg.append(
-    f'<circle cx="{hero_x + 8}" cy="{hero_y + 4}" '
+    f'<circle cx="{hero_x + 8}" '
+    f'cy="{hero_y + 4}" '
     f'r="1.3" fill="#ffffff"/>'
 )
 
-# Floating coding particles
-symbols = ["</>", "{ }", "01", "git", "★"]
+# Coding particles
+symbols = [
+    "&lt;/&gt;",
+    "{ }",
+    "01",
+    "git",
+    "*",
+]
 
 random.seed(42)
 
-for i in range(14):
+for _ in range(14):
 
     x = random.randint(60, 930)
-    y = random.randint(80, 250)
+    y = random.randint(80, 230)
 
     symbol = random.choice(symbols)
 
     color = random.choice([
         ACCENT,
         PURPLE,
-        "#39d353"
+        "#39d353",
     ])
+
+    duration = random.randint(3, 6)
 
     svg.append(
         f'''
-        <text x="{x}" y="{y}"
-        fill="{color}"
-        opacity="0.35"
-        font-family="monospace"
-        font-size="10">
-        {symbol}
-
-        <animate
-            attributeName="opacity"
-            values="0.15;0.7;0.15"
-            dur="{random.randint(3,6)}s"
-            repeatCount="indefinite"/>
-        </text>
-        '''
+<text x="{x}" y="{y}"
+      fill="{color}"
+      opacity="0.35"
+      font-family="monospace"
+      font-size="10">
+    {symbol}
+    <animate
+        attributeName="opacity"
+        values="0.15;0.7;0.15"
+        dur="{duration}s"
+        repeatCount="indefinite"/>
+</text>
+'''
     )
 
-# Bottom progress line
+# Bottom progress background
 svg.append(
-    f'<rect x="40" y="245" width="920" height="5" '
-    f'rx="3" fill="#161b22"/>'
+    f'<rect x="40" y="245" '
+    f'width="920" height="5" '
+    f'rx="3" fill="{GRID_EMPTY}"/>'
 )
 
+# Animated progress
 svg.append(
     f'''
-    <rect x="40" y="245" width="650" height="5"
-    rx="3" fill="{ACCENT}">
-        <animate
-            attributeName="width"
-            values="100;650;100"
-            dur="8s"
-            repeatCount="indefinite"/>
-    </rect>
-    '''
+<rect x="40" y="245"
+      width="650"
+      height="5"
+      rx="3"
+      fill="{ACCENT}">
+    <animate
+        attributeName="width"
+        values="100;650;100"
+        dur="8s"
+        repeatCount="indefinite"/>
+</rect>
+'''
 )
 
 # Footer
 now = datetime.now().strftime("%d %b %Y")
 
 svg.append(
-    f'<text x="40" y="280" fill="#8b949e" '
-    f'font-family="Arial" font-size="11">'
-    f'Last generated: {now}'
+    f'<text x="40" y="280" '
+    f'fill="{MUTED}" '
+    f'font-family="Arial, sans-serif" '
+    f'font-size="11">'
+    f'Last generated: {escape(now)}'
     f'</text>'
 )
 
 svg.append(
-    f'<text x="960" y="280" text-anchor="end" '
-    f'fill="{PURPLE}" font-family="monospace" '
+    f'<text x="960" y="280" '
+    f'text-anchor="end" '
+    f'fill="{PURPLE}" '
+    f'font-family="monospace" '
     f'font-size="11">'
-    f'@{USERNAME}'
+    f'@{escape(USERNAME)}'
     f'</text>'
 )
 
 svg.append("</svg>")
 
-os.makedirs("dist", exist_ok=True)
+# Save directly in repository root
+output_file = "developer-journey.svg"
 
 with open(
-    "dist/developer-journey.svg",
+    output_file,
     "w",
-    encoding="utf-8"
+    encoding="utf-8",
 ) as file:
     file.write("\n".join(svg))
 
-print("Developer Journey generated successfully!")
+print(f"Developer Journey generated: {output_file}")
