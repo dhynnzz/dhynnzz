@@ -1,42 +1,137 @@
+<!-- ===================== HEADER ===================== -->
+
 <p align="center">
   <img 
-    src="https://github.com/user-attachments/assets/cf0af25c-ac6c-44be-aa81-48b39b557f7e"
-    alt="Monkey D. Luffy GIF"
-    width="300"
+    src="https://github.com/user-attachments/assets/1fb2bff8-4099-4e8e-b5a1-bf9c47d80d6c"
+    alt="One Piece Banner"
+    width="100%"
   />
 </p>
 
+<h1 align="center">Hi 👋, I'm Mhmd Aminuddin</h1>
 
-# 💫 About Me:
-<br>Saya adalah mahasiswa Informatika semester 6 yang memiliki ketertarikan pada bidang pengembangan teknologi, khususnya Web Development dan UI/UX Design. Selama perkuliahan, saya telah mengerjakan berbagai proyek yang membantu saya memahami proses perancangan hingga pengembangan sebuah aplikasi.<br>Saya terbiasa menggunakan beberapa teknologi dan tools seperti Laravel, PHP, MySQL, HTML, CSS, JavaScript, serta Figma untuk perancangan antarmuka. Saya juga memiliki pengalaman dalam mempelajari bidang lain seperti Machine Learning dan pengembangan aplikasi.<br>Saya memiliki semangat untuk terus belajar, mencoba teknologi baru, serta mengembangkan kemampuan melalui proyek nyata. Ke depannya, saya ingin memperluas pengalaman dan meningkatkan kemampuan agar dapat berkontribusi dalam pengembangan solusi teknologi yang bermanfaat.<br>
+<h3 align="center">
+  Informatics Student • Web Developer • UI/UX Enthusiast
+</h3>
 
+<p align="center">
+  <i>Learning, building, and improving one project at a time.</i>
+</p>
 
-# 🌐 Socials:
+<br>
 
-[![Facebook](https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white)](https://www.facebook.com/mhmd.aminuddin.2025)
-[![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/_dhynnzz)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mhmd-aminuddin-a43696331/)
-[![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:dindhyn18@gmail.com)
+<!-- ===================== SOCIAL MEDIA ===================== -->
 
-# 💻 Tech Stack:
-![C++](https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white) ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E) ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![Alpine.js](https://img.shields.io/badge/alpinejs-white.svg?style=for-the-badge&logo=alpinedotjs&logoColor=%238BC0D0) ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB) ![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white) ![Laravel](https://img.shields.io/badge/laravel-%23FF2D20.svg?style=for-the-badge&logo=laravel&logoColor=white) ![React Native](https://img.shields.io/badge/react_native-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![Vue.js](https://img.shields.io/badge/vue.js-%2335495e.svg?style=for-the-badge&logo=vuedotjs&logoColor=%234FC08D) ![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white) ![Apache](https://img.shields.io/badge/apache-%23D42029.svg?style=for-the-badge&logo=apache&logoColor=white) ![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white) ![Firebase](https://img.shields.io/badge/firebase-a08021?style=for-the-badge&logo=firebase&logoColor=ffcd34) ![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white) ![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white) ![Canva](https://img.shields.io/badge/Canva-%2300C4CC.svg?style=for-the-badge&logo=Canva&logoColor=white) ![Blender](https://img.shields.io/badge/blender-%23F5792A.svg?style=for-the-badge&logo=blender&logoColor=white) ![Notion](https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white) ![Windows Terminal](https://img.shields.io/badge/Windows%20Terminal-%234D4D4D.svg?style=for-the-badge&logo=windows-terminal&logoColor=white) ![PowerShell](https://img.shields.io/badge/PowerShell-%235391FE.svg?style=for-the-badge&logo=powershell&logoColor=white)
-# 📊 GitHub Stats:
-![](https://github-readme-stats.shion.dev/api?username=dhynnzz&theme=shadow_blue&hide_border=false&include_all_commits=true&count_private=true)<br/>
-![](https://streak-stats.demolab.com/?user=dhynnzz&theme=shadow_blue&hide_border=false)<br/>
-![](https://github-readme-stats.shion.dev/api/top-langs/?username=dhynnzz&theme=shadow_blue&hide_border=false&include_all_commits=true&count_private=true&layout=compact)
+<p align="center">
+  <a href="https://www.facebook.com/mhmd.aminuddin.2025">
+    <img src="https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white" />
+  </a>
+  <a href="https://instagram.com/_dhynnzz">
+    <img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white" />
+  </a>
+  <a href="https://www.linkedin.com/in/mhmd-aminuddin-a43696331/">
+    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" />
+  </a>
+  <a href="mailto:dindhyn18@gmail.com">
+    <img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" />
+  </a>
+</p>
 
-## 🏆 GitHub Trophies
-![](https://github-profile-trophy.vercel.app/?username=dhynnzz&theme=radical&no-frame=false&no-bg=true&margin-w=4)
-
-### 🔝 Top Contributed Repo
-![](https://github-contributor-stats.vercel.app/api?username=dhynnzz&limit=5&theme=dark&combine_all_yearly_contributions=true)
+<br>
 
 ---
-[![](https://komarev.com/ghpvc/?username=dhynnzz&icon=0&color=0)](https://visitcount.itsvg.in)
 
-<!-- Proudly created with GPRM ( https://gprm.itsvg.in ) -->
+<!-- ===================== ABOUT ME ===================== -->
 
-<h2 align="center">🐍 My Contributions</h2>
+## 👨‍💻 About Me
+
+Saya adalah mahasiswa Informatika semester 6 yang tertarik dengan **Web Development** dan **UI/UX Design**. Saya senang mempelajari hal baru dan mencoba menerapkannya melalui berbagai proyek yang saya kerjakan selama perkuliahan.
+
+Saat ini saya banyak menggunakan **Laravel, PHP, MySQL, JavaScript**, dan **Figma**. Saya juga tertarik untuk mengeksplorasi bidang lain seperti **Machine Learning** dan pengembangan aplikasi.
+
+- 🎓 Informatics Student
+- 💻 Interested in Web Development
+- 🎨 Exploring UI/UX Design
+- 🌱 Currently improving my development skills
+- 🚀 Enjoy building projects and exploring new technologies
+
+<br>
+
+---
+
+<!-- ===================== TECH STACK ===================== -->
+
+## ⚡ Tech Stack
+
+### 💻 Languages
+
+![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![C++](https://img.shields.io/badge/C++-00599C?style=for-the-badge&logo=cplusplus&logoColor=white)
+
+### 🌐 Web Development
+
+![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+
+### 🗄️ Database
+
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase-DD2C00?style=for-the-badge&logo=firebase&logoColor=white)
+
+### 🎨 Tools & Design
+
+![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)
+![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
+![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
+![VS Code](https://img.shields.io/badge/VS_Code-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white)
+
+<br>
+
+---
+
+<!-- ===================== PROJECTS ===================== -->
+
+# 🚀 Featured Projects
+
+### 1. Jasa Pengiriman Barang
+Aplikasi berbasis web untuk membantu proses pengelolaan layanan pengiriman barang, mulai dari sisi pengguna hingga pengelolaan data melalui halaman admin.
+
+**Tech:** Web Development • Frontend • Backend
+
+[![Repository](https://img.shields.io/badge/Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/dhynnzz/Jasa_Pengiriman_Barang)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://jasa-pengiriman-barang-pi.vercel.app)
+
+### 2. MobilKu — Aplikasi Pemesanan Rental Mobil
+
+Aplikasi mobile untuk membantu proses pemesanan rental mobil, mulai dari melihat daftar kendaraan hingga melakukan pemesanan melalui aplikasi.
+
+**Tech:** React Native • JavaScript • Mobile Development
+
+[![Repository](https://img.shields.io/badge/Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/dhynnzz/MobilKu-Aplikasi-Pemesanan-Rental-Mobil)
+
+<br>
+
+### 3. Klasifikasi Citra Tumor Otak Menggunakan KNN
+Project Machine Learning untuk melakukan klasifikasi data tumor otak menggunakan algoritma **K-Nearest Neighbors (KNN)** sebagai metode klasifikasi.
+
+**Tech:** Python • Machine Learning • KNN • Jupyter Notebook
+
+[![Repository](https://img.shields.io/badge/Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/dhynnzz/Klasifikasi-Citra-Tumor-Otak-Menggunakan-Metode-K-Nearest-Neighbors-KNN-)
+
+<!-- ===================== GITHUB ANALYTICS ===================== -->
+
+<h2>📊 GitHub Analytics</h2>
+
+<p align="center">
+  🚧 GitHub statistics are currently unavailable.
+</p>
+
+<!-- ===================== CONTRIBUTION SNAKE ===================== -->
+
+<h2 align="center">🐍 My Contribution Journey</h2>
 
 <p align="center">
   <picture>
@@ -53,4 +148,31 @@
       src="https://raw.githubusercontent.com/dhynnzz/dhynnzz/gh-pages/github-contribution-grid-snake.svg"
     />
   </picture>
+</p>
+
+<br>
+
+<!-- ===================== PROFILE VIEWS ===================== -->
+
+<p align="center">
+  <img 
+    src="https://komarev.com/ghpvc/?username=dhynnzz&label=Profile%20Views&color=39d353&style=flat"
+    alt="Profile Views"
+  />
+</p>
+
+<br>
+
+---
+
+<!-- ===================== FOOTER ===================== -->
+
+<p align="center">
+  <i>"If you don't take risks, you can't create a future."</i>
+</p>
+
+<h3 align="center">☠️</h3>
+
+<p align="center">
+  <b>Thanks for visiting my profile!</b>
 </p>
