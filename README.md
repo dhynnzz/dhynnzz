@@ -102,7 +102,7 @@ Aplikasi berbasis web untuk membantu proses pengelolaan layanan pengiriman baran
 **Tech:** Web Development • Frontend • Backend
 
 [![Repository](https://img.shields.io/badge/Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/dhynnzz/Jasa_Pengiriman_Barang)
-[![Live Demo](https://nabilatrans-web.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://nabilatrans-web.vercel.app)
 
 ### 2. MobilKu — Aplikasi Pemesanan Rental Mobil
 
