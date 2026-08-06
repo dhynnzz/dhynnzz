@@ -133,25 +133,15 @@ Project Machine Learning untuk melakukan klasifikasi data tumor otak menggunakan
   />
 </p>
 <!-- ===================== CONTRIBUTION SNAKE ===================== -->
-<br>
-
-<h2 align="center">⚡ Contribution Journey</h2>
 
 <p align="center">
   <img
-    src="https://raw.githubusercontent.com/dhynnzz/dhynnzz/output/github-contribution-grid-snake-dark.svg"
-    alt="GitHub Contribution Animation"
+    src="https://raw.githubusercontent.com/dhynnzz/dhynnzz/output/galaga-contribution-graph-dark.svg"
+    alt="Galaga Contribution Graph"
     width="100%"
   />
 </p>
-
-<p align="center">
-  <i>Quiet, and let's do this.</i>
-</p>
-
-<br>
 <!-- ===================== FOOTER ===================== -->
-<br>
 
 ---
 
