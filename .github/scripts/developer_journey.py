@@ -6,10 +6,10 @@ from datetime import datetime
 USERNAME = "dhynnzz"
 
 WIDTH = 1200
-HEIGHT = 390
+HEIGHT = 420
 
 BG = "#0d1117"
-CARD = "#0d1117"
+PANEL = "#111820"
 BORDER = "#30363d"
 GRID_EMPTY = "#161b22"
 
@@ -20,18 +20,21 @@ GREEN_4 = "#39d353"
 
 CYAN = "#00d9ff"
 PURPLE = "#a855f7"
-TEXT = "#f0f6fc"
+YELLOW = "#facc15"
+RED = "#ff5c5c"
+
+TEXT = "#e6edf3"
 MUTED = "#8b949e"
 
-token = os.environ.get("GITHUB_TOKEN", "")
+TOKEN = os.environ.get("GITHUB_TOKEN", "")
 
 headers = {
-    "Authorization": f"Bearer {token}",
+    "Authorization": f"Bearer {TOKEN}",
     "Content-Type": "application/json",
 }
 
 query = """
-query($userName: String!) {
+query($userName:String!) {
   user(login: $userName) {
     contributionsCollection {
       contributionCalendar {
@@ -61,141 +64,195 @@ response = requests.post(
 
 response.raise_for_status()
 
-data = response.json()
+payload = response.json()
 
-if "errors" in data:
-    raise RuntimeError(data["errors"])
+if payload.get("errors"):
+    raise RuntimeError(payload["errors"])
 
 calendar = (
-    data["data"]["user"]["contributionsCollection"]
-    ["contributionCalendar"]
+    payload["data"]["user"]["contributionsCollection"]["contributionCalendar"]
 )
 
 weeks = calendar["weeks"]
 total_contributions = calendar["totalContributions"]
 
-# =========================================================
-# CALCULATE STATS
-# =========================================================
-
-active_days = 0
-max_day = 0
+all_days = []
 
 for week in weeks:
     for day in week["contributionDays"]:
-        count = day["contributionCount"]
+        all_days.append(day)
 
-        if count > 0:
-            active_days += 1
-
-        max_day = max(max_day, count)
-
-# XP dibuat berdasarkan aktivitas nyata
-xp = min(
-    100,
-    int((active_days / 365) * 100)
+active_days = sum(
+    1 for day in all_days
+    if day["contributionCount"] > 0
 )
 
-# Level berdasarkan total contributions
-level = max(
-    1,
-    (total_contributions // 100) + 1
+best_day = max(
+    all_days,
+    key=lambda day: day["contributionCount"],
 )
 
-# =========================================================
-# SVG START
-# =========================================================
+best_day_count = best_day["contributionCount"]
+
+# =========================
+# GAME PROGRESSION
+# =========================
+
+XP_PER_LEVEL = 100
+
+total_xp = total_contributions * 10
+
+level = max(1, total_xp // XP_PER_LEVEL + 1)
+
+current_level_xp = total_xp % XP_PER_LEVEL
+
+xp_percent = current_level_xp / XP_PER_LEVEL
+
+# =========================
+# SVG HELPERS
+# =========================
 
 svg = []
 
-svg.append(
+def add(content):
+    svg.append(content)
+
+def text(x, y, value, size=14, color=TEXT,
+         weight="normal", anchor="start",
+         family="monospace"):
+    add(
+        f'<text x="{x}" y="{y}" '
+        f'fill="{color}" '
+        f'font-size="{size}" '
+        f'font-weight="{weight}" '
+        f'text-anchor="{anchor}" '
+        f'font-family="{family}">'
+        f'{value}</text>'
+    )
+
+def rect(x, y, w, h, color,
+         radius=0, stroke="none",
+         stroke_width=0, opacity=1):
+    add(
+        f'<rect x="{x}" y="{y}" '
+        f'width="{w}" height="{h}" '
+        f'rx="{radius}" '
+        f'fill="{color}" '
+        f'stroke="{stroke}" '
+        f'stroke-width="{stroke_width}" '
+        f'opacity="{opacity}"/>'
+    )
+
+# =========================
+# SVG START
+# =========================
+
+add(
     f'<svg xmlns="http://www.w3.org/2000/svg" '
     f'width="{WIDTH}" height="{HEIGHT}" '
     f'viewBox="0 0 {WIDTH} {HEIGHT}">'
 )
 
-# Background
-svg.append(
-    f'<rect width="{WIDTH}" height="{HEIGHT}" '
-    f'rx="20" fill="{BG}"/>'
+add("""
+<style>
+
+.title {
+    font-family: monospace;
+    font-weight: 800;
+}
+
+.glow {
+    filter: drop-shadow(0 0 6px #00d9ff);
+}
+
+.greenGlow {
+    filter: drop-shadow(0 0 5px #39d353);
+}
+
+.purpleGlow {
+    filter: drop-shadow(0 0 5px #a855f7);
+}
+
+</style>
+""")
+
+# =========================
+# BACKGROUND
+# =========================
+
+rect(
+    1, 1,
+    WIDTH - 2,
+    HEIGHT - 2,
+    BG,
+    18,
+    BORDER,
+    2,
 )
 
-# Border
-svg.append(
-    f'<rect x="1" y="1" '
-    f'width="{WIDTH - 2}" height="{HEIGHT - 2}" '
-    f'rx="19" fill="none" '
-    f'stroke="{BORDER}" stroke-width="2"/>'
-)
-
-# =========================================================
+# =========================
 # HEADER
-# =========================================================
+# =========================
 
-svg.append(
-    f'<text x="45" y="48" '
-    f'fill="{TEXT}" '
-    f'font-family="Arial, sans-serif" '
-    f'font-size="23" '
-    f'font-weight="bold">'
-    f'DEVELOPER QUEST'
-    f'</text>'
+text(
+    35, 45,
+    "DEVELOPER QUEST",
+    25,
+    TEXT,
+    "bold",
 )
 
-svg.append(
-    f'<text x="45" y="73" '
-    f'fill="{MUTED}" '
-    f'font-family="Arial, sans-serif" '
-    f'font-size="13">'
-    f'Building my journey, one commit at a time.'
-    f'</text>'
+text(
+    35, 69,
+    "Building my journey, one commit at a time.",
+    12,
+    MUTED,
 )
 
 # Online indicator
-svg.append(
-    f'<circle cx="1040" cy="43" r="5" fill="{GREEN_4}">'
-    f'<animate attributeName="opacity" '
-    f'values="1;0.3;1" dur="2s" '
-    f'repeatCount="indefinite"/>'
-    f'</circle>'
+
+add(
+    '<circle cx="1000" cy="40" r="5" '
+    'fill="#39d353" class="greenGlow">'
+    '<animate attributeName="opacity" '
+    'values="1;0.35;1" dur="2s" '
+    'repeatCount="indefinite"/>'
+    '</circle>'
 )
 
-svg.append(
-    f'<text x="1055" y="48" '
-    f'fill="{GREEN_4}" '
-    f'font-family="monospace" '
-    f'font-size="12" '
-    f'font-weight="bold">'
-    f'ONLINE'
-    f'</text>'
+text(
+    1013, 44,
+    "ONLINE",
+    11,
+    GREEN_4,
+    "bold",
 )
 
-# Level
-svg.append(
-    f'<text x="1150" y="48" '
-    f'text-anchor="end" '
-    f'fill="{PURPLE}" '
-    f'font-family="monospace" '
-    f'font-size="12">'
-    f'LVL {level:02d}'
-    f'</text>'
+text(
+    1135, 44,
+    f"LV. {level:02}",
+    11,
+    PURPLE,
+    "bold",
+    "end",
 )
 
-# Divider
-svg.append(
-    f'<line x1="45" y1="90" '
-    f'x2="1155" y2="90" '
-    f'stroke="{BORDER}"/>'
+# Separator
+
+rect(
+    35, 86,
+    1130, 1,
+    BORDER,
 )
 
-# =========================================================
-# CONTRIBUTION GRID
-# =========================================================
+# =========================
+# CONTRIBUTION MAP
+# =========================
 
-START_X = 45
+START_X = 35
 START_Y = 115
 
-CELL = 13
+CELL = 14
 GAP = 4
 
 level_map = {
@@ -215,167 +272,204 @@ for x, week in enumerate(weeks):
         px = START_X + x * (CELL + GAP)
         py = START_Y + y * (CELL + GAP)
 
-        level_name = day["contributionLevel"]
-
         color = level_map.get(
-            level_name,
-            GRID_EMPTY
+            day["contributionLevel"],
+            GRID_EMPTY,
         )
 
-        count = day["contributionCount"]
-
-        if count > 0:
+        if day["contributionCount"] > 0:
             active_cells.append(
-                (px, py, count)
+                (
+                    px,
+                    py,
+                    day["contributionCount"],
+                )
             )
 
-        svg.append(
-            f'<rect '
-            f'x="{px}" y="{py}" '
-            f'width="{CELL}" height="{CELL}" '
-            f'rx="3" '
-            f'fill="{color}"/>'
+        rect(
+            px,
+            py,
+            CELL,
+            CELL,
+            color,
+            3,
         )
 
-# =========================================================
+# =========================
 # QUEST CHECKPOINTS
-# =========================================================
+# =========================
 
 if active_cells:
 
-    checkpoint_indexes = [
-        len(active_cells) // 4,
-        len(active_cells) // 2,
-        (len(active_cells) * 3) // 4,
+    checkpoint_count = min(
+        4,
+        len(active_cells),
+    )
+
+    step = max(
+        1,
+        len(active_cells) // checkpoint_count,
+    )
+
+    checkpoints = active_cells[::step][
+        :checkpoint_count
     ]
 
-    for index in checkpoint_indexes:
+    for i, (cx, cy, count) in enumerate(checkpoints):
 
-        if index < len(active_cells):
+        add(
+            f'<circle '
+            f'cx="{cx + CELL / 2}" '
+            f'cy="{cy + CELL / 2}" '
+            f'r="10" '
+            f'fill="none" '
+            f'stroke="{CYAN}" '
+            f'stroke-width="1" '
+            f'opacity="0.65">'
+            f'<animate '
+            f'attributeName="r" '
+            f'values="8;13;8" '
+            f'dur="{2 + i * 0.4}s" '
+            f'repeatCount="indefinite"/>'
+            f'</circle>'
+        )
 
-            cx, cy, _ = active_cells[index]
-
-            svg.append(
-                f'<circle '
-                f'cx="{cx + CELL / 2}" '
-                f'cy="{cy + CELL / 2}" '
-                f'r="10" '
-                f'fill="none" '
-                f'stroke="{CYAN}" '
-                f'stroke-width="1" '
-                f'opacity="0.4">'
-                f'<animate '
-                f'attributeName="r" '
-                f'values="7;13;7" '
-                f'dur="3s" '
-                f'repeatCount="indefinite"/>'
-                f'</circle>'
-            )
-
-# =========================================================
-# DEVELOPER CHARACTER
-# =========================================================
+# =========================
+# PLAYER
+# =========================
 
 if active_cells:
-    hero_x, hero_y, _ = active_cells[-1]
+
+    hero_x = active_cells[-1][0]
+    hero_y = active_cells[-1][1]
+
 else:
-    hero_x = 900
+
+    hero_x = 600
     hero_y = 150
 
 hero_center_x = hero_x + CELL / 2
 hero_center_y = hero_y + CELL / 2
 
 # Glow
-svg.append(
+
+add(
     f'<circle '
     f'cx="{hero_center_x}" '
     f'cy="{hero_center_y}" '
-    f'r="18" '
+    f'r="20" '
     f'fill="{CYAN}" '
-    f'opacity="0.10">'
+    f'opacity="0.12">'
     f'<animate '
     f'attributeName="r" '
-    f'values="14;23;14" '
-    f'dur="2s" '
+    f'values="16;24;16" '
+    f'dur="1.8s" '
     f'repeatCount="indefinite"/>'
     f'</circle>'
 )
 
-# Head
-svg.append(
-    f'<circle '
-    f'cx="{hero_center_x}" '
-    f'cy="{hero_center_y - 2}" '
-    f'r="7" '
-    f'fill="{CYAN}"/>'
+# Pixel character body
+
+rect(
+    hero_center_x - 7,
+    hero_center_y - 7,
+    14,
+    14,
+    CYAN,
+    4,
 )
 
 # Eyes
-svg.append(
-    f'<circle '
-    f'cx="{hero_center_x - 2.5}" '
-    f'cy="{hero_center_y - 3}" '
-    f'r="1.2" '
-    f'fill="#ffffff"/>'
+
+add(
+    f'<circle cx="{hero_center_x - 3}" '
+    f'cy="{hero_center_y - 2}" '
+    f'r="1.5" fill="white"/>'
 )
 
-svg.append(
-    f'<circle '
-    f'cx="{hero_center_x + 2.5}" '
-    f'cy="{hero_center_y - 3}" '
-    f'r="1.2" '
-    f'fill="#ffffff"/>'
+add(
+    f'<circle cx="{hero_center_x + 3}" '
+    f'cy="{hero_center_y - 2}" '
+    f'r="1.5" fill="white"/>'
 )
 
-# Developer label
-svg.append(
-    f'<text '
-    f'x="{hero_center_x}" '
-    f'y="{hero_center_y + 23}" '
-    f'text-anchor="middle" '
-    f'fill="{CYAN}" '
-    f'font-family="monospace" '
-    f'font-size="8">'
-    f'DEV'
-    f'</text>'
+# Legs
+
+rect(
+    hero_center_x - 6,
+    hero_center_y + 7,
+    4,
+    4,
+    CYAN,
+    1,
 )
 
-# =========================================================
+rect(
+    hero_center_x + 2,
+    hero_center_y + 7,
+    4,
+    4,
+    CYAN,
+    1,
+)
+
+text(
+    hero_center_x,
+    hero_center_y + 29,
+    "DEV",
+    8,
+    CYAN,
+    "bold",
+    "middle",
+)
+
+# =========================
 # PARTICLES
-# =========================================================
+# =========================
 
 random.seed(42)
 
 symbols = [
     "&lt;/&gt;",
-    "{ }",
-    "01",
+    "{}",
     "git",
-    "+",
+    "01",
+    "+1",
 ]
 
-for _ in range(10):
+for _ in range(12):
 
-    x = random.randint(100, 1080)
-    y = random.randint(105, 215)
+    px = random.randint(
+        70,
+        1080,
+    )
+
+    py = random.randint(
+        105,
+        230,
+    )
 
     symbol = random.choice(symbols)
 
-    color = random.choice([
-        CYAN,
-        PURPLE,
-        GREEN_4,
-    ])
+    color = random.choice(
+        [
+            CYAN,
+            PURPLE,
+            GREEN_4,
+        ]
+    )
 
-    duration = random.randint(3, 6)
+    duration = random.randint(
+        3,
+        6,
+    )
 
-    svg.append(
-        f'<text '
-        f'x="{x}" y="{y}" '
+    add(
+        f'<text x="{px}" y="{py}" '
         f'fill="{color}" '
-        f'opacity="0.25" '
+        f'font-size="9" '
         f'font-family="monospace" '
-        f'font-size="9">'
+        f'opacity="0.25">'
         f'{symbol}'
         f'<animate '
         f'attributeName="opacity" '
@@ -385,46 +479,43 @@ for _ in range(10):
         f'</text>'
     )
 
-# =========================================================
+# =========================
 # XP SECTION
-# =========================================================
+# =========================
 
-svg.append(
-    f'<text '
-    f'x="45" y="265" '
-    f'fill="{TEXT}" '
-    f'font-family="monospace" '
-    f'font-size="12" '
-    f'font-weight="bold">'
-    f'XP'
-    f'</text>'
+text(
+    35,
+    274,
+    "XP",
+    12,
+    TEXT,
+    "bold",
 )
 
-BAR_X = 80
-BAR_Y = 255
-BAR_WIDTH = 920
-BAR_HEIGHT = 12
+rect(
+    75,
+    264,
+    870,
+    10,
+    GRID_EMPTY,
+    5,
+)
 
-svg.append(
+xp_width = int(
+    870 * xp_percent
+)
+
+if xp_width < 15:
+    xp_width = 15
+
+add(
     f'<rect '
-    f'x="{BAR_X}" y="{BAR_Y}" '
-    f'width="{BAR_WIDTH}" '
-    f'height="{BAR_HEIGHT}" '
-    f'rx="6" '
-    f'fill="{GRID_EMPTY}"/>'
-)
-
-progress_width = int(
-    BAR_WIDTH * (xp / 100)
-)
-
-svg.append(
-    f'<rect '
-    f'x="{BAR_X}" y="{BAR_Y}" '
-    f'width="{progress_width}" '
-    f'height="{BAR_HEIGHT}" '
-    f'rx="6" '
-    f'fill="{CYAN}">'
+    f'x="75" y="264" '
+    f'width="{xp_width}" '
+    f'height="10" '
+    f'rx="5" '
+    f'fill="{CYAN}" '
+    f'class="glow">'
     f'<animate '
     f'attributeName="opacity" '
     f'values="0.75;1;0.75" '
@@ -433,133 +524,135 @@ svg.append(
     f'</rect>'
 )
 
-svg.append(
-    f'<text '
-    f'x="1020" y="265" '
-    f'fill="{CYAN}" '
-    f'font-family="monospace" '
-    f'font-size="12" '
-    f'font-weight="bold">'
-    f'{xp}%'
-    f'</text>'
+text(
+    965,
+    274,
+    f"{current_level_xp}/{XP_PER_LEVEL} XP",
+    10,
+    CYAN,
+    "bold",
 )
 
-# =========================================================
-# STATS
-# =========================================================
+# =========================
+# STAT CARDS
+# =========================
 
-svg.append(
-    f'<text x="45" y="305" '
-    f'fill="{GREEN_4}" '
-    f'font-family="monospace" '
-    f'font-size="12">'
-    f'● {total_contributions} CONTRIBUTIONS'
-    f'</text>'
-)
+CARD_Y = 305
+CARD_H = 65
+CARD_W = 250
 
-svg.append(
-    f'<text x="310" y="305" '
-    f'fill="{CYAN}" '
-    f'font-family="monospace" '
-    f'font-size="12">'
-    f'● {active_days} ACTIVE DAYS'
-    f'</text>'
-)
+cards = [
+    (
+        35,
+        "TOTAL CONTRIBUTIONS",
+        str(total_contributions),
+        GREEN_4,
+    ),
+    (
+        320,
+        "ACTIVE DAYS",
+        str(active_days),
+        CYAN,
+    ),
+    (
+        605,
+        "BEST DAY",
+        f"{best_day_count} COMMITS",
+        PURPLE,
+    ),
+    (
+        890,
+        "CURRENT QUEST",
+        "KEEP BUILDING",
+        YELLOW,
+    ),
+]
 
-svg.append(
-    f'<text x="550" y="305" '
-    f'fill="{PURPLE}" '
-    f'font-family="monospace" '
-    f'font-size="12">'
-    f'● BEST DAY {max_day} COMMITS'
-    f'</text>'
-)
+for x, label, value, color in cards:
 
-# =========================================================
-# JOURNEY STATUS
-# =========================================================
+    rect(
+        x,
+        CARD_Y,
+        CARD_W,
+        CARD_H,
+        PANEL,
+        10,
+        BORDER,
+        1,
+    )
 
-svg.append(
-    f'<text x="45" y="340" '
-    f'fill="{MUTED}" '
-    f'font-family="monospace" '
-    f'font-size="11">'
-    f'◉ LEARNING'
-    f'</text>'
-)
+    add(
+        f'<circle '
+        f'cx="{x + 18}" '
+        f'cy="{CARD_Y + 20}" '
+        f'r="4" '
+        f'fill="{color}"/>'
+    )
 
-svg.append(
-    f'<text x="190" y="340" '
-    f'fill="{MUTED}" '
-    f'font-family="monospace" '
-    f'font-size="11">'
-    f'◉ BUILDING'
-    f'</text>'
-)
+    text(
+        x + 30,
+        CARD_Y + 24,
+        label,
+        9,
+        MUTED,
+        "bold",
+    )
 
-svg.append(
-    f'<text x="335" y="340" '
-    f'fill="{MUTED}" '
-    f'font-family="monospace" '
-    f'font-size="11">'
-    f'◉ IMPROVING'
-    f'</text>'
-)
+    text(
+        x + 18,
+        CARD_Y + 50,
+        value,
+        14,
+        color,
+        "bold",
+    )
 
-# =========================================================
+# =========================
 # FOOTER
-# =========================================================
+# =========================
 
-now = datetime.now().strftime(
+today = datetime.now().strftime(
     "%d %b %Y"
 )
 
-svg.append(
-    f'<text '
-    f'x="45" y="370" '
-    f'fill="{MUTED}" '
-    f'font-family="Arial, sans-serif" '
-    f'font-size="10">'
-    f'Last generated: {now}'
-    f'</text>'
+text(
+    35,
+    400,
+    f"Last generated: {today}",
+    10,
+    MUTED,
 )
 
-svg.append(
-    f'<text '
-    f'x="1150" y="370" '
-    f'text-anchor="end" '
-    f'fill="{PURPLE}" '
-    f'font-family="monospace" '
-    f'font-size="11" '
-    f'font-weight="bold">'
-    f'@{USERNAME}'
-    f'</text>'
+text(
+    1160,
+    400,
+    f"@{USERNAME}",
+    10,
+    PURPLE,
+    "bold",
+    "end",
 )
 
-svg.append("</svg>")
+add("</svg>")
+
+# =========================
+# SAVE
+# =========================
+
+os.makedirs(
+    "dist",
+    exist_ok=True,
+)
 
 with open(
-    "developer-journey.svg",
+    "dist/developer-journey.svg",
     "w",
-    encoding="utf-8"
+    encoding="utf-8",
 ) as file:
-
     file.write(
         "\n".join(svg)
     )
 
 print(
-    "Developer Quest generated successfully!"
-)
-
-print(
-    f"Total Contributions: {total_contributions}"
-)
-
-print(
-    f"Active Days: {active_days}"
-)
-
-print(
-    f"XP: {xp}%"
+    "Developer Quest V2 generated successfully!"
 )
